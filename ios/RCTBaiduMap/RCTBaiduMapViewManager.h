@@ -11,7 +11,10 @@
 
 #import "RCTBaiduMapView.h"
 
-@interface RCTBaiduMapViewManager : RCTViewManager<BMKMapViewDelegate>
+@interface RCTBaiduMapViewManager : RCTViewManager<BMKMapViewDelegate,BMKLocationServiceDelegate>
+
+@property (nonatomic) BMKLocationService *locService;
+@property (nonatomic) RCTBaiduMapView    *mapView;
 
 +(void)initSDK:(NSString *)key;
 

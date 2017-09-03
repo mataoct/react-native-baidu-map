@@ -8,6 +8,8 @@
 
 #import "RCTBaiduMapViewManager.h"
 
+#import <CoreLocation/CLLocationManager.h>
+
 @implementation RCTBaiduMapViewManager;
 
 RCT_EXPORT_MODULE(RCTBaiduMapView)
@@ -26,6 +28,8 @@ RCT_CUSTOM_VIEW_PROPERTY(center, CLLocationCoordinate2D, RCTBaiduMapView) {
 }
 
 
+
+
 +(void)initSDK:(NSString*)key {
     
     BMKMapManager* _mapManager = [[BMKMapManager alloc]init];
@@ -36,9 +40,19 @@ RCT_CUSTOM_VIEW_PROPERTY(center, CLLocationCoordinate2D, RCTBaiduMapView) {
 }
 
 - (UIView *)view {
-    RCTBaiduMapView* mapView = [[RCTBaiduMapView alloc] init];
-    mapView.delegate = self;
-    return mapView;
+    _mapView = [[RCTBaiduMapView alloc] init];
+    _mapView.delegate = self;
+    
+    _locService = [[BMKLocationService alloc] init];
+    _locService.delegate = self;
+    [_locService startUserLocationService];
+    
+    //设置定位的状态
+    _mapView.userTrackingMode = BMKUserTrackingModeNone;
+    //显示定位图层
+    _mapView.showsUserLocation = YES;
+    
+    return _mapView;
 }
 
 -(void)mapview:(BMKMapView *)mapView
@@ -113,6 +127,20 @@ didSelectAnnotationView:(BMKAnnotationView *)view {
         return newAnnotationView;
     }
     return nil;
+}
+
+- (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation{
+    NSLog(@"location bmk %d,%@",userLocation.isUpdating,userLocation.location);
+    CLLocationCoordinate2D coor = CLLocationCoordinate2DMake(userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
+    _mapView.centerCoordinate = coor;
+    
+    [_mapView updateLocationData:userLocation];
+    [_locService stopUserLocationService];
+
+}
+
+- (void)didFailToLocateUserWithError:(NSError *)error{
+    NSLog(@"error location %@",error);
 }
 
 -(void)mapStatusDidChanged: (BMKMapView *)mapView	 {

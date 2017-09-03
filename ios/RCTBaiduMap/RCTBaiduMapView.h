@@ -10,11 +10,12 @@
 #define RCTBaiduMapView_h
 
 
-#import "RCTViewManager.h"
-#import "RCTConvert+CoreLocation.h"
+#import <React/RCTViewManager.h>
+#import <React/RCTConvert+CoreLocation.h>
 #import <BaiduMapAPI_Map/BMKMapView.h>
 #import <BaiduMapAPI_Map/BMKPinAnnotationView.h>
 #import <BaiduMapAPI_Map/BMKPointAnnotation.h>
+#import <BaiduMapAPI_Location/BMKLocationService.h>
 #import <UIKit/UIKit.h>
 
 @interface RCTBaiduMapView : BMKMapView <BMKMapViewDelegate>
