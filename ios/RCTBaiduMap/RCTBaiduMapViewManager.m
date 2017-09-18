@@ -95,6 +95,7 @@ didSelectAnnotationView:(BMKAnnotationView *)view {
                             @"type": @"onMarkerClick",
                             @"params": @{
                                     @"title": [[view annotation] title],
+                                    @"subTitle" : [[view annotation] subtitle],
                                     @"position": @{
                                             @"latitude": @([[view annotation] coordinate].latitude),
                                             @"longitude": @([[view annotation] coordinate].longitude)
@@ -122,8 +123,10 @@ didSelectAnnotationView:(BMKAnnotationView *)view {
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation {
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
-        newAnnotationView.pinColor = BMKPinAnnotationColorPurple;
+//        newAnnotationView.pinColor = BMKPinAnnotationColorPurple;
         newAnnotationView.animatesDrop = YES;
+        newAnnotationView.image = [UIImage imageNamed:@"ic_mark"];
+        
         return newAnnotationView;
     }
     return nil;

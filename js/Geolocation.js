@@ -42,6 +42,23 @@ export default {
       });
     });
   },
+
+  getDistance(lat1, lng1,lat2, lng2) {
+    return new Promise((resolve, reject) => {
+      try {
+        _module.getDistance(lat1, lng1,lat2, lng2);
+      }
+      catch (e) {
+        reject(e);
+        return;
+      }
+      DeviceEventEmitter.once('onDistanceResult', resp => {
+        resolve(resp);
+      });
+    });
+  },
+
+
   reverseGeoCodeGPS(lat, lng) {
     return new Promise((resolve, reject) => {
       try {
