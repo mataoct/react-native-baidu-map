@@ -11,6 +11,7 @@
 
 
 #import <BaiduMapAPI_Location/BMKLocationService.h>
+#import <BaiduMapAPI_Utils/BMKUtilsComponent.h>
 
 #import "BaseModule.h"
 #import "RCTBaiduMapViewManager.h"

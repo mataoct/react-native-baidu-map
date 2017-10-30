@@ -42,23 +42,6 @@ export default {
       });
     });
   },
-
-  getDistance(lat1, lng1,lat2, lng2) {
-    return new Promise((resolve, reject) => {
-      try {
-        _module.getDistance(lat1, lng1,lat2, lng2);
-      }
-      catch (e) {
-        reject(e);
-        return;
-      }
-      DeviceEventEmitter.once('onDistanceResult', resp => {
-        resolve(resp);
-      });
-    });
-  },
-
-
   reverseGeoCodeGPS(lat, lng) {
     return new Promise((resolve, reject) => {
       try {
@@ -112,5 +95,22 @@ export default {
         resolve(resp);
       });
     });
+  },
+
+  getDistance(aLatitude,aLongitude,bLatitude,bLongitude){
+    if(Platform.OS ==='ios'){
+      return new Promise((resolve,reject) => {
+        try {
+          _module.getDistance(aLatitude,aLongitude,bLatitude,bLongitude)
+        }
+        catch (e) {
+          reject (e);
+          return;
+        }
+        DeviceEventEmitter.once('onGetDistance',resp => {
+          resolve(resp);
+        })
+      })
+    }
   }
 };

@@ -57,7 +57,7 @@ RCT_CUSTOM_VIEW_PROPERTY(center, CLLocationCoordinate2D, RCTBaiduMapView) {
 
 -(void)mapview:(BMKMapView *)mapView
  onDoubleClick:(CLLocationCoordinate2D)coordinate {
-    NSLog(@"onDoubleClick");
+//    NSLog(@"onDoubleClick");
     NSDictionary* event = @{
                             @"type": @"onMapDoubleClick",
                             @"params": @{
@@ -70,7 +70,7 @@ RCT_CUSTOM_VIEW_PROPERTY(center, CLLocationCoordinate2D, RCTBaiduMapView) {
 
 -(void)mapView:(BMKMapView *)mapView
 onClickedMapBlank:(CLLocationCoordinate2D)coordinate {
-    NSLog(@"onClickedMapBlank");
+//    NSLog(@"onClickedMapBlank");
     NSDictionary* event = @{
                             @"type": @"onMapClick",
                             @"params": @{
@@ -95,7 +95,6 @@ didSelectAnnotationView:(BMKAnnotationView *)view {
                             @"type": @"onMarkerClick",
                             @"params": @{
                                     @"title": [[view annotation] title],
-                                    @"subTitle" : [[view annotation] subtitle],
                                     @"position": @{
                                             @"latitude": @([[view annotation] coordinate].latitude),
                                             @"longitude": @([[view annotation] coordinate].longitude)
@@ -107,7 +106,7 @@ didSelectAnnotationView:(BMKAnnotationView *)view {
 
 - (void) mapView:(BMKMapView *)mapView
  onClickedMapPoi:(BMKMapPoi *)mapPoi {
-    NSLog(@"onClickedMapPoi");
+//    NSLog(@"onClickedMapPoi");
     NSDictionary* event = @{
                             @"type": @"onMapPoiClick",
                             @"params": @{
@@ -123,17 +122,16 @@ didSelectAnnotationView:(BMKAnnotationView *)view {
 - (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation {
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
         BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"myAnnotation"];
+        newAnnotationView.image = [UIImage imageNamed:@"ic_mark"];
 //        newAnnotationView.pinColor = BMKPinAnnotationColorPurple;
         newAnnotationView.animatesDrop = YES;
-        newAnnotationView.image = [UIImage imageNamed:@"ic_mark"];
-        
         return newAnnotationView;
     }
     return nil;
 }
 
 - (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation{
-    NSLog(@"location bmk %d,%@",userLocation.isUpdating,userLocation.location);
+//    NSLog(@"location bmk %d,%@",userLocation.isUpdating,userLocation.location);
     CLLocationCoordinate2D coor = CLLocationCoordinate2DMake(userLocation.location.coordinate.latitude, userLocation.location.coordinate.longitude);
     _mapView.centerCoordinate = coor;
     
@@ -147,7 +145,7 @@ didSelectAnnotationView:(BMKAnnotationView *)view {
 }
 
 -(void)mapStatusDidChanged: (BMKMapView *)mapView	 {
-    NSLog(@"mapStatusDidChanged");
+//    NSLog(@"mapStatusDidChanged");
     CLLocationCoordinate2D targetGeoPt = [mapView getMapStatus].targetGeoPt;
     NSDictionary* event = @{
                             @"type": @"onMapStatusChange",

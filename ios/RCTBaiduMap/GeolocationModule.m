@@ -88,30 +88,26 @@ RCT_EXPORT_METHOD(reverseGeoCodeGPS:(double)lat lng:(double)lng) {
     //[reverseGeoCodeSearchOption release];
 }
 
-
-RCT_EXPORT_METHOD(getDistance:(double)lat1 lng1:(double)lng1 lat2:(double)lat2 lng2:(double)lng2){
-    NSMutableDictionary *body = [self getEmptyBody];
+RCT_EXPORT_METHOD(getDistance:(double)lat lng:(double)lng bLat:(double)bLat bLng:(double)bLng) {
     
-    NSLog(@"get distance");
+//     [self sendEvent:@"onGetDistance" body:body];
     
-    NSString *latitude1 = [NSString stringWithFormat:@"%f", lat1];
-    NSString *longitude1 = [NSString stringWithFormat:@"%f", lng1];
-    NSString *latitude2 = [NSString stringWithFormat:@"%f", lat2];
-    NSString *longitude2 = [NSString stringWithFormat:@"%f", lng2];
+    BMKMapPoint pointA = BMKMapPointForCoordinate(CLLocationCoordinate2DMake(lat, lng));
+    BMKMapPoint pointB = BMKMapPointForCoordinate(CLLocationCoordinate2DMake(bLat, bLng));
     
-    body[@"latitude1"] = latitude1;
-    body[@"longitude1"] = longitude1;
-    body[@"latitude2"] = latitude2;
-    body[@"longitude2"] = longitude2;
     
-    BMKMapPoint point1 = BMKMapPointForCoordinate(CLLocationCoordinate2DMake(lat1,lng1));
-    BMKMapPoint point2 = BMKMapPointForCoordinate(CLLocationCoordinate2DMake(lat2,lng2));
-    CLLocationDistance distance = BMKMetersBetweenMapPoints(point1,point2);
-    NSString *distanceStr = [NSString stringWithFormat:@"%f", distance];
-    body[@"distance"] = distanceStr;
-    [self sendEvent:@"onDistanceResult" body:body];
+    CLLocationDistance distance = BMKMetersBetweenMapPoints(pointA, pointB);
+    
+    
+    NSMutableDictionary *distanceDic = [NSMutableDictionary new];
+    
+    [distanceDic setObject:@(distance) forKey:@"distance"];
+    [distanceDic setObject:@(bLat) forKey:@"latitude2"];
+    [distanceDic setObject:@(bLng) forKey:@"longitude2"];
+    NSLog(@"get distance %@",distanceDic);
+    
+    [self sendEvent:@"onGetDistance" body:distanceDic];
 }
-
 
 -(BMKGeoCodeSearch *)getGeocodesearch{
     if(geoCodeSearch == nil) {
@@ -173,8 +169,6 @@ RCT_EXPORT_METHOD(getDistance:(double)lat1 lng1:(double)lng1 lat2:(double)lat2 l
     
     geoCodeSearch.delegate = nil;
 }
-
-
 -(NSString *)getSearchErrorInfo:(BMKSearchErrorCode)error {
     NSString *errormsg = @"未知";
     switch (error) {

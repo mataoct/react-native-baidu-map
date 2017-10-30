@@ -99,15 +99,9 @@
     CLLocationCoordinate2D coor = [self getCoorFromMarkerOption:option];
     NSString *title = [RCTConvert NSString:option[@"title"]];
     NSString *subTitle = [RCTConvert NSString:option[@"subTitle"]];
-    
-    NSLog(@"sub title %@ %@",option,subTitle);
     if(title.length == 0) {
         title = nil;
     }
-//    if(subTitle.length == 0) {
-//        subTitle = @'';
-//    }
-//    NSLog(@"sub title %@ %@",option,subTitle);
     annotation.coordinate = coor;
     annotation.title = title;
     annotation.subtitle = subTitle;
